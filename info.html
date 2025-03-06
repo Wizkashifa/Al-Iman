@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundraising Thermometer</title>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/confetti.js/0.0.18/confetti.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .thermometer-container {
+            width: 100px;
+            height: 400px;
+            background: lightgray;
+            border-radius: 50px;
+            position: relative;
+            margin: 20px auto;
+            overflow: hidden;
+            border: 3px solid #333;
+        }
+        .fill {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            background: red;
+            transition: height 1s ease-in-out;
+        }
+        .milestone {
+            position: absolute;
+            left: 110%;
+            font-weight: bold;
+            background: yellow;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Fundraising Thermometer</h2>
+    <div class="thermometer-container">
+        <div class="fill" id="fill" style="height: 0;"></div>
+        <div class="milestone" style="bottom: 57%">$75K - Bathrooms</div>
+        <div class="milestone" style="bottom: 81%">$105K - Lobby Flooring</div>
+        <div class="milestone" style="bottom: 100%">$130K - Main Doors</div>
+    </div>
+    <h3 id="amount-raised">Raised: $0</h3>
+    <script>
+        const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo";
+        const RANGE = "C7";
+        const API_KEY = "YOUR_GOOGLE_SHEETS_API_KEY"; // Replace with your actual API Key
+        const totalGoal = 130000;
+
+        async function fetchPledgeAmount() {
+            try {
+                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
+                const data = await response.json();
+                let amountRaised = parseInt(data.values[0][0]) || 0;
+                updateThermometer(amountRaised);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function updateThermometer(amountRaised) {
+            document.getElementById("amount-raised").innerText = `Raised: $${amountRaised.toLocaleString()}`;
+            let percentage = Math.min((amountRaised / totalGoal) * 100, 100);
+            document.getElementById("fill").style.height = percentage + "%";
+            
+            if (amountRaised >= 75000) triggerAnimation();
+        }
+
+        function triggerAnimation() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        fetchPledgeAmount();
+        setInterval(fetchPledgeAmount, 60000); // Refresh every minute
+    </script>
+</body>
+</html>
