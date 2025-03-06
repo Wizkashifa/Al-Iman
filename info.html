@@ -51,6 +51,61 @@
         const RANGE = "C7";
         const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE"; // Replace with your actual API Key
         const totalGoal = 130000;
+        let lastAmountRaised = 0;
+
+        async function fetchPledgeAmount() {
+            try {
+                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
+                const data = await response.json();
+                let amountRaised = parseInt(data.values[0][0]) || 0;
+                updateThermometer(amountRaised);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        function updateThermometer(amountRaised) {
+            document.getElementById("amount-raised").innerText = `Raised: $${amountRaised.toLocaleString()}`;
+            let percentage = Math.min((amountRaised / totalGoal) * 100, 100);
+            document.getElementById("fill").style.height = percentage + "%";
+            
+            checkMilestoneAnimation(amountRaised);
+            lastAmountRaised = amountRaised;
+        }
+
+        function checkMilestoneAnimation(amountRaised) {
+            if (lastAmountRaised < 75000 && amountRaised >= 75000) {
+                triggerAnimation();
+                highlightMilestone("milestone-75");
+            }
+            if (lastAmountRaised < 105000 && amountRaised >= 105000) {
+                triggerAnimation();
+                highlightMilestone("milestone-105");
+            }
+            if (lastAmountRaised < 130000 && amountRaised >= 130000) {
+                triggerAnimation();
+                highlightMilestone("milestone-130");
+            }
+        }
+
+        function triggerAnimation() {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function highlightMilestone(milestoneId) {
+            let milestone = document.getElementById(milestoneId);
+            milestone.style.background = "gold";
+            milestone.style.transform = "scale(1.2)";
+            setTimeout(() => {
+                milestone.style.transform = "scale(1)";
+            }, 1000);
+        }
+
+        fetchPledgeAmount();
+        setInterval(fetchPledgeAmount, 10000); // Refresh every 10 seconds
+    </script>
+</body>
+</html>
 
         async function fetchPledgeAmount() {
             try {
