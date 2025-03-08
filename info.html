@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Al-Iman School Fundraiser</title>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/confetti.js/0.0.18/confetti.min.js"></script>
+    <script src="https://run.confettipage.com/here.js" data-confetticode="U2FsdGVkX19KQZdoZ0SJVxmay03YCNGEf5+mGWLVUHXno3S+l+d/ryJRRQHYN2XayTItN6QmuYjfC25sMUNbwJFe2Bt1tjMkyRSsypfHEWQaXT3+ggP4KwgEPNHoLgkX9CQz7uKMvNkcuUlIUaF/dahVZR8prRT3dgeNs144Q6Wkv+jzUaylnH1YIHXI2MwlOpFMeMbnUgt8ZTqenu+ZKKhvCyGaXXeayKThG9MFDTqWxtkpGQ9v6xemKF7CgiL4tm1ACCepCb+KTU8FmodSjvvFKJJl/Xj/n3x8mv6LzUsiAYdQVtlJiWtacuvoCRefSOvj9g4vkz/AhcY74YfmnRLTLHjwyKiRNgTALGG9aqeH5Y9TbIhSap0Xo94A7007dCT4xW1MO8UJvz4iZGhXynais6Z6Pop11sNmr6DXo/3LjnSH8UaxVkRZ9Y5X5zWaWqI527JPvMnRZydDFWC6MTLJEGaXXhpSVu2ICZYh9DNd3S/6+S/WQZSoqJBmYxyNXqn4uPluHgaaFcMquk+j7pJVGGCN3p7rSr67U5O4mlFTE7mOOAifO35vrslNWxXtsnG7uIO0BImECXyg6S9mikJCLCaiSVeZCgCGBwDClT5kvfPjMUYbaQgd5PfvrfzpL8TeAQ/foLsSkArwM2XIlOmS3f1Iy3Iet78UZHv7AeDomx72aFa5Y/f5FuldvXvIkDwJOYnE0XX6GvHXdKhdqfsHQr++DhUF2AXk8Uvitc3JFRxoPjASLzp7M6GoRgy8"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -95,66 +95,25 @@
     </div>
 
     <script>
-        const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo";
-        const RANGE = "C7";
-        const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE";
-        const totalGoal = 130000;
-        let lastAmountRaised = 0;
-
-        async function fetchPledgeAmount() {
-            try {
-                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
-                const data = await response.json();
-                let amountRaised = parseInt(data.values[0][0]) || 0;
-                updateThermometer(amountRaised);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        }
-
-        function updateThermometer(amountRaised) {
-            document.getElementById("amount-raised").innerText = `Raised: $${amountRaised.toLocaleString()}`;
-            let percentage = Math.min((amountRaised / totalGoal) * 100, 100);
-            document.getElementById("fill").style.height = percentage + "%";
-            checkMilestoneAnimation(amountRaised);
-            lastAmountRaised = amountRaised;
+        function triggerConfetti() {
+            confettiStart();
+            setTimeout(confettiStop, 5000);
         }
 
         function checkMilestoneAnimation(amountRaised) {
             if (lastAmountRaised < 75000 && amountRaised >= 75000) {
-                triggerAnimation();
+                triggerConfetti();
                 highlightMilestone("milestone-75");
             }
             if (lastAmountRaised < 105000 && amountRaised >= 105000) {
-                triggerAnimation();
+                triggerConfetti();
                 highlightMilestone("milestone-105");
             }
             if (lastAmountRaised < 130000 && amountRaised >= 130000) {
-                triggerFinalCelebration();
+                triggerConfetti();
                 highlightMilestone("milestone-130");
             }
         }
-
-        function triggerAnimation() {
-            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        }
-
-        function triggerFinalCelebration() {
-            confetti({ particleCount: 300, spread: 90, origin: { y: 0.6 } });
-            confetti({ particleCount: 300, spread: 90, origin: { y: 0.4 } });
-        }
-
-        function highlightMilestone(milestoneId) {
-            let milestone = document.getElementById(milestoneId);
-            milestone.style.background = "gold";
-            milestone.style.transform = "scale(1.2)";
-            setTimeout(() => {
-                milestone.style.transform = "scale(1)";
-            }, 1000);
-        }
-
-        fetchPledgeAmount();
-        setInterval(fetchPledgeAmount, 10000);
     </script>
 </body>
 </html>
