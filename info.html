@@ -57,11 +57,12 @@
             position: absolute;
             left: 130%;
             font-weight: bold;
-            background: yellow;
+            background: #333;
             padding: 8px;
             border-radius: 5px;
-            color: black;
+            color: white;
             white-space: nowrap;
+            border: 1px solid white;
         }
         /* Each milestone's position in % from bottom. Adjust as needed. */
         .milestone-75 {
@@ -94,7 +95,11 @@
             bottom: 100%;
         }
 
-        /* End Thermometer Styles */
+        #raised-amount {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            color: white; /* ensure text is white */
+        }
     </style>
 </head>
 <body>
@@ -115,8 +120,10 @@
             <div class="milestone milestone-130">$130K - Main Doors</div>
             <div class="milestone-desc desc-130">Install new, secure main entrance doors</div>
         </div>
+        <div id="raised-amount">Raised: $0</div>
     </div>
-
+</body>
+    
     <script>
         // EDIT THESE CONSTANTS TO MATCH YOUR SETUP
         const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo"; // Your sheet's ID
@@ -141,6 +148,7 @@
 
         function updateThermometer(amountRaised) {
             const fillElement = document.getElementById("fill");
+            const raisedAmountElement = document.getElementById("raised-amount");
             // Calculate the ratio of current pledged to goal (capped at 100%)
             let ratio = amountRaised / TOTAL_GOAL;
             if (ratio > 1) ratio = 1;
@@ -148,6 +156,8 @@
             const heightPercent = ratio * 100;
             // Update the fill bar
             fillElement.style.height = heightPercent + "%";
+            // Update the displayed raised amount
+            raisedAmountElement.textContent = `Raised: $${amountRaised.toLocaleString()}`;
         }
 
         // Fetch the pledge amount on page load
@@ -155,5 +165,4 @@
         // Optionally refresh every minute (60000ms)
         // setInterval(fetchPledgeAmount, 60000);
     </script>
-</body>
 </html>
