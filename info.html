@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fundraising Thermometer</title>
+    <title>Al-Iman School Fundraiser</title>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/confetti.js/0.0.18/confetti.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
         }
         .thermometer-container {
             width: 100px;
@@ -16,7 +29,6 @@
             background: lightgray;
             border-radius: 50px;
             position: relative;
-            margin: 20px auto;
             overflow: hidden;
             border: 3px solid #333;
         }
@@ -34,23 +46,55 @@
             background: yellow;
             padding: 5px;
             border-radius: 5px;
+            color: black;
+        }
+        .milestone-desc {
+            position: absolute;
+            left: 120%;
+            font-size: 0.9em;
+            color: lightgray;
+            width: 200px;
+            text-align: left;
+        }
+        .qr-container {
+            text-align: center;
+        }
+        .qr-container img {
+            width: 200px;
+            height: 200px;
+        }
+        .qr-container p {
+            font-size: 1.2em;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h2>Fundraising Thermometer</h2>
-    <div class="thermometer-container">
-        <div class="fill" id="fill" style="height: 0;"></div>
-        <div class="milestone" style="bottom: 57%" id="milestone-75">$75K - Bathrooms</div>
-        <div class="milestone" style="bottom: 81%" id="milestone-105">$105K - Lobby Flooring</div>
-        <div class="milestone" style="bottom: 100%" id="milestone-130">$130K - Main Doors</div>
+    <div class="container">
+        <div class="thermometer-section">
+            <h2>Fundraising Thermometer</h2>
+            <div class="thermometer-container">
+                <div class="fill" id="fill" style="height: 0;"></div>
+                <div class="milestone" style="bottom: 57%" id="milestone-75">$75K - Bathrooms</div>
+                <div class="milestone-desc" style="bottom: 57%">Renovate all student & staff bathrooms</div>
+                <div class="milestone" style="bottom: 81%" id="milestone-105">$105K - Lobby Flooring</div>
+                <div class="milestone-desc" style="bottom: 81%">Upgrade 1st & 2nd floor lobby flooring</div>
+                <div class="milestone" style="bottom: 100%" id="milestone-130">$130K - Main Doors</div>
+                <div class="milestone-desc" style="bottom: 100%">Install new, secure main entrance doors</div>
+            </div>
+            <h3 id="amount-raised">Raised: $0</h3>
+        </div>
+        <div class="qr-container">
+            <img src="Al Iman 2025 QR Code.png" alt="Donate QR Code">
+            <p>Donate to Al-Iman's Renovation</p>
+            <a href="https://www.alimanschool.org" target="_blank" style="color: yellow; text-decoration: none; font-size: 1.2em;">Visit Al-Iman School</a>
+        </div>
     </div>
-    <h3 id="amount-raised">Raised: $0</h3>
 </body>
     <script>
         const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo";
         const RANGE = "C7";
-        const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE"; // Replace with your actual API Key
+        const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE"; 
         const totalGoal = 130000;
         let lastAmountRaised = 0;
 
@@ -69,7 +113,6 @@
             document.getElementById("amount-raised").innerText = `Raised: $${amountRaised.toLocaleString()}`;
             let percentage = Math.min((amountRaised / totalGoal) * 100, 100);
             document.getElementById("fill").style.height = percentage + "%";
-            
             checkMilestoneAnimation(amountRaised);
             lastAmountRaised = amountRaised;
         }
@@ -84,13 +127,18 @@
                 highlightMilestone("milestone-105");
             }
             if (lastAmountRaised < 130000 && amountRaised >= 130000) {
-                triggerAnimation();
+                triggerFinalCelebration();
                 highlightMilestone("milestone-130");
             }
         }
 
         function triggerAnimation() {
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        function triggerFinalCelebration() {
+            confetti({ particleCount: 300, spread: 90, origin: { y: 0.6 } });
+            confetti({ particleCount: 300, spread: 90, origin: { y: 0.4 } });
         }
 
         function highlightMilestone(milestoneId) {
@@ -103,6 +151,6 @@
         }
 
         fetchPledgeAmount();
-        setInterval(fetchPledgeAmount, 10000); // Refresh every 10 seconds
+        setInterval(fetchPledgeAmount, 10000);
     </script>
 </html>
