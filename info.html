@@ -1,168 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Iman School Fundraiser</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background: #1a1a1a;
-            color: white;
-            margin: 0;
-            padding: 0;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Al-Iman School Fundraiser</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #1a1a1a;
+      color: white;
+      margin: 0;
+      padding: 0;
+    }
 
-        .header {
-            padding: 1rem;
-            background: #333;
-        }
+    .header {
+      padding: 1rem;
+      background: #333;
+    }
+    .header h1 {
+      margin: 0;
+    }
 
-        .header h1 {
-            margin: 0;
-        }
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+    }
 
-        .main {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: calc(100vh - 60px);
-        }
+    /* Thermometer container */
+    .thermometer-container {
+      width: 120px;
+      height: 500px;
+      background: lightgray;
+      border-radius: 50px;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #ffffff;
+      margin: 2rem auto;
+    }
 
-        /* Thermometer Styles */
-        .thermometer-container {
-            width: 120px;
-            height: 500px;
-            background: lightgray;
-            border-radius: 50px;
-            position: relative;
-            overflow: hidden;
-            border: 3px solid #ffffff;
-            margin: 2rem auto;
-        }
+    /* The fill that grows */
+    .fill {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background: red;
+      height: 0%; /* updated dynamically */
+      transition: height 1s ease-in-out;
+    }
 
-        .fill {
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-            background: red;
-            height: 0%; /* The dynamic fill will be updated via JavaScript */
-            transition: height 1s ease-in-out;
-        }
+    /* Tick marks on the thermometer itself */
+    .tick {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 2px;       /* thickness of the tick line */
+      background: #111;  /* dark line; can adjust to white if preferred */
+      opacity: 0.7;
+    }
+    /* Place each tick at matching milestone % from bottom */
+    .tick-75 {
+      bottom: 57%;
+    }
+    .tick-105 {
+      bottom: 81%;
+    }
+    .tick-130 {
+      bottom: 100%;
+    }
 
-        /* Milestone Markers */
-        .milestone {
-            position: absolute;
-            left: 130%;
-            font-weight: bold;
-            background: #333;
-            padding: 8px;
-            border-radius: 5px;
-            color: white;
-            white-space: nowrap;
-            border: 1px solid white;
-        }
-        /* Each milestone's position in % from bottom. Adjust as needed. */
-        .milestone-75 {
-            bottom: 57%;
-        }
-        .milestone-105 {
-            bottom: 81%;
-        }
-        .milestone-130 {
-            bottom: 100%;
-        }
+    /* Milestone Labels to the right */
+    .milestone {
+      position: absolute;
+      left: 130%;
+      font-weight: bold;
+      background: #333;
+      padding: 8px;
+      border-radius: 5px;
+      color: white;
+      white-space: nowrap;
+      border: 1px solid white;
+    }
+    .milestone-75 {
+      bottom: 57%;
+    }
+    .milestone-105 {
+      bottom: 81%;
+    }
+    .milestone-130 {
+      bottom: 100%;
+    }
 
-        /* Descriptions (optional) */
-        .milestone-desc {
-            position: absolute;
-            left: 135%;
-            font-size: 1em;
-            color: white;
-            width: 250px;
-            text-align: left;
-        }
+    /* Descriptions */
+    .milestone-desc {
+      position: absolute;
+      left: 135%;
+      font-size: 1em;
+      color: white;
+      width: 250px;
+      text-align: left;
+    }
+    .desc-75 {
+      bottom: 57%;
+    }
+    .desc-105 {
+      bottom: 81%;
+    }
+    .desc-130 {
+      bottom: 100%;
+    }
 
-        .desc-75 {
-            bottom: 57%;
-        }
-        .desc-105 {
-            bottom: 81%;
-        }
-        .desc-130 {
-            bottom: 100%;
-        }
-
-        #raised-amount {
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            color: white; /* ensure text is white */
-        }
-    </style>
+    #raised-amount {
+      font-size: 1.2rem;
+      margin-top: 1rem;
+      color: white;
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Al-Iman School Renovation Fundraiser</h1>
+  <div class="header">
+    <h1>Al-Iman School Renovation Fundraiser</h1>
+  </div>
+  <div class="main">
+    <!-- Thermometer -->
+    <div class="thermometer-container">
+      <!-- Fill -->
+      <div class="fill" id="fill"></div>
+
+      <!-- Tick Marks -->
+      <div class="tick tick-75"></div>
+      <div class="tick tick-105"></div>
+      <div class="tick tick-130"></div>
+
+      <!-- Milestone Labels -->
+      <div class="milestone milestone-75">$75K - Bathrooms</div>
+      <div class="milestone-desc desc-75">Renovate all student & staff bathrooms</div>
+
+      <div class="milestone milestone-105">$105K - Lobby Flooring</div>
+      <div class="milestone-desc desc-105">Upgrade 1st & 2nd floor lobby flooring</div>
+
+      <div class="milestone milestone-130">$130K - Main Doors</div>
+      <div class="milestone-desc desc-130">Install new, secure main entrance doors</div>
     </div>
-    <div class="main">
-        <!-- Thermometer -->
-        <div class="thermometer-container">
-            <div class="fill" id="fill"></div>
-            <!-- Milestone markers -->
-            <div class="milestone milestone-75">$75K - Bathrooms</div>
-            <div class="milestone-desc desc-75">Renovate all student & staff bathrooms</div>
+    <!-- Display the raised amount -->
+    <div id="raised-amount">Raised: $0</div>
+  </div>
 
-            <div class="milestone milestone-105">$105K - Lobby Flooring</div>
-            <div class="milestone-desc desc-105">Upgrade 1st & 2nd floor lobby flooring</div>
+  <script>
+    // EDIT THESE CONSTANTS TO MATCH YOUR SETUP
+    const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo"; // Your sheet's ID
+    const RANGE = "C7"; // The cell that holds the total pledge amount
+    const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE"; // Replace with your Google Sheets API key
+    const TOTAL_GOAL = 130000; // The total fundraising goal
 
-            <div class="milestone milestone-130">$130K - Main Doors</div>
-            <div class="milestone-desc desc-130">Install new, secure main entrance doors</div>
-        </div>
-        <div id="raised-amount">Raised: $0</div>
-    </div>
+    async function fetchPledgeAmount() {
+      try {
+        const response = await fetch(
+          `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`
+        );
+        const data = await response.json();
 
-    <script>
-        // EDIT THESE CONSTANTS TO MATCH YOUR SETUP
-        const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo"; // Your sheet's ID
-        const RANGE = "C7"; // The cell that holds the total pledge amount
-        const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE"; // Replace with your Google Sheets API key
-        const TOTAL_GOAL = 130000; // The total fundraising goal
-
-        async function fetchPledgeAmount() {
-            try {
-                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`);
-                const data = await response.json();
-                // Attempt to parse the result
-                let amountRaised = 0;
-                if (data && data.values && data.values[0] && data.values[0][0]) {
-                    amountRaised = parseInt(data.values[0][0]) || 0;
-                }
-                updateThermometer(amountRaised);
-            } catch (error) {
-                console.error("Error fetching data from Google Sheets:", error);
-            }
+        let amountRaised = 0;
+        if (data?.values?.[0]?.[0]) {
+          amountRaised = parseInt(data.values[0][0]) || 0;
         }
+        updateThermometer(amountRaised);
+      } catch (error) {
+        console.error("Error fetching data from Google Sheets:", error);
+      }
+    }
 
-        function updateThermometer(amountRaised) {
-            const fillElement = document.getElementById("fill");
-            const raisedAmountElement = document.getElementById("raised-amount");
-            // Calculate the ratio of current pledged to goal (capped at 100%)
-            let ratio = amountRaised / TOTAL_GOAL;
-            if (ratio > 1) ratio = 1;
-            // Convert ratio to percentage
-            const heightPercent = ratio * 100;
-            // Update the fill bar
-            fillElement.style.height = heightPercent + "%";
-            // Update the displayed raised amount
-            raisedAmountElement.textContent = `Raised: $${amountRaised.toLocaleString()}`;
-        }
+    function updateThermometer(amountRaised) {
+      const fillElement = document.getElementById("fill");
+      const raisedAmountElement = document.getElementById("raised-amount");
 
-        // Fetch the pledge amount on page load
-        fetchPledgeAmount();
-        // Optionally refresh every minute (60000ms)
-        // setInterval(fetchPledgeAmount, 60000);
-    </script>
+      // Calculate ratio (cap at 100%)
+      let ratio = amountRaised / TOTAL_GOAL;
+      if (ratio > 1) ratio = 1;
+
+      // Convert ratio to a percentage
+      const heightPercent = ratio * 100;
+
+      // Update fill
+      fillElement.style.height = heightPercent + "%";
+
+      // Update displayed total
+      raisedAmountElement.textContent = `Raised: $${amountRaised.toLocaleString()}`;
+    }
+
+    // Fetch on page load
+    fetchPledgeAmount();
+    // setInterval(fetchPledgeAmount, 60000); // optional auto-refresh
+  </script>
 </body>
 </html>
