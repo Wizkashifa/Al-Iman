@@ -9,11 +9,12 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background: #121212;
+            background: #1a1a1a;
             color: white;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             margin: 0;
         }
@@ -21,16 +22,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 50px;
+            gap: 100px;
+            max-width: 90%;
         }
         .thermometer-container {
-            width: 100px;
-            height: 400px;
+            width: 120px;
+            height: 500px;
             background: lightgray;
             border-radius: 50px;
             position: relative;
             overflow: hidden;
-            border: 3px solid #333;
+            border: 3px solid #ffffff;
         }
         .fill {
             width: 100%;
@@ -41,60 +43,61 @@
         }
         .milestone {
             position: absolute;
-            left: 110%;
+            left: 130%;
             font-weight: bold;
             background: yellow;
-            padding: 5px;
+            padding: 8px;
             border-radius: 5px;
             color: black;
+            white-space: nowrap;
         }
         .milestone-desc {
             position: absolute;
-            left: 120%;
-            font-size: 0.9em;
-            color: lightgray;
-            width: 200px;
+            left: 135%;
+            font-size: 1em;
+            color: white;
+            width: 250px;
             text-align: left;
         }
         .qr-container {
             text-align: center;
         }
         .qr-container img {
-            width: 200px;
-            height: 200px;
+            width: 250px;
+            height: 250px;
         }
         .qr-container p {
-            font-size: 1.2em;
+            font-size: 1.5em;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
+    <h1>Al-Iman School Renovation Fundraiser</h1>
     <div class="container">
         <div class="thermometer-section">
-            <h2>Fundraising Thermometer</h2>
             <div class="thermometer-container">
                 <div class="fill" id="fill" style="height: 0;"></div>
                 <div class="milestone" style="bottom: 57%" id="milestone-75">$75K - Bathrooms</div>
-                <div class="milestone-desc" style="bottom: 57%">Renovate all student & staff bathrooms</div>
+                <div class="milestone-desc" style="bottom: 57%">🚻 Renovate all student & staff bathrooms</div>
                 <div class="milestone" style="bottom: 81%" id="milestone-105">$105K - Lobby Flooring</div>
-                <div class="milestone-desc" style="bottom: 81%">Upgrade 1st & 2nd floor lobby flooring</div>
+                <div class="milestone-desc" style="bottom: 81%">🏢 Upgrade 1st & 2nd floor lobby flooring</div>
                 <div class="milestone" style="bottom: 100%" id="milestone-130">$130K - Main Doors</div>
-                <div class="milestone-desc" style="bottom: 100%">Install new, secure main entrance doors</div>
+                <div class="milestone-desc" style="bottom: 100%">🚪 Install new, secure main entrance doors</div>
             </div>
-            <h3 id="amount-raised">Raised: $0</h3>
+            <h2 id="amount-raised">Raised: $0</h2>
         </div>
         <div class="qr-container">
             <img src="Al Iman 2025 QR Code.png" alt="Donate QR Code">
-            <p>Donate to Al-Iman's Renovation</p>
-            <a href="https://www.alimanschool.org" target="_blank" style="color: yellow; text-decoration: none; font-size: 1.2em;">Visit Al-Iman School</a>
+            <p>Scan to Donate to Al-Iman's Renovation</p>
+            <a href="https://www.alimanschool.org" target="_blank" style="color: yellow; text-decoration: none; font-size: 1.3em;">Visit Al-Iman School</a>
         </div>
     </div>
-</body>
+
     <script>
         const SHEET_ID = "1-fSrx0AvnWW6YGm-cEiQBxyJbhtLRcNN-DkOYGpPcVo";
         const RANGE = "C7";
-        const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE"; 
+        const API_KEY = "AIzaSyAg_99VENYguMLyON5J9ALx7T8C4G3lLYE";
         const totalGoal = 130000;
         let lastAmountRaised = 0;
 
@@ -153,4 +156,5 @@
         fetchPledgeAmount();
         setInterval(fetchPledgeAmount, 10000);
     </script>
+</body>
 </html>
